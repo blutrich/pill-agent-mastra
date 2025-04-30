@@ -22,5 +22,8 @@ module.exports = {
   },
   
   // Specify Mastra directory
-  mastraPath: 'src/mastra'
+  mastraPath: 'src/mastra',
+  
+  // Specify agent name explicitly
+  agentName: 'Climbing Coach'
 }; 

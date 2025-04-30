@@ -28,7 +28,7 @@ const memory = new Memory({
 // Create and export the Mastra instance with the climbing coach agent
 export const mastra = new Mastra({
   agents: { 
-    climbingCoach: climbingCoachAgent 
+    "Climbing Coach": climbingCoachAgent 
   },
   logger: createLogger({
     name: 'ClimbingPill Coach',
