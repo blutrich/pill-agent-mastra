@@ -1,7 +1,10 @@
 module.exports = {
+  // Project name
+  name: 'climbing-coach-agent',
+  
   // Server configuration
   server: {
-    port: process.env.PORT ? parseInt(process.env.PORT) : 4114,
+    port: process.env.PORT ? parseInt(process.env.PORT) : 4111,
     cors: {
       origin: process.env.CORS_ORIGIN || '*',
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -30,13 +33,13 @@ module.exports = {
 
   // Memory configuration
   memory: {
-    type: process.env.MEMORY_STORE_TYPE || 'file',
+    type: process.env.MEMORY_STORE_TYPE || 'cloud',
     path: './data/memory'
   },
   
-  // Deployment configuration
-  deployer: {
-    provider: 'cloudflare',
-    region: 'us-east-1'
+  // Deployment configuration for Mastra Cloud
+  cloud: {
+    provider: 'mastra',
+    entryPoint: './src/mastra/index.ts'
   }
 }; 
