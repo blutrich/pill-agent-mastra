@@ -19,11 +19,5 @@ module.exports = {
   // Set up memory storage to use Mastra Cloud
   memory: {
     type: 'cloud'
-  },
-  
-  // Specify Mastra directory
-  mastraPath: 'src/mastra',
-  
-  // Specify agent name explicitly
-  agentName: 'Climbing Coach'
+  }
 }; 
