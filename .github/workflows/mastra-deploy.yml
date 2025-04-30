@@ -1,0 +1,45 @@
+name: Deploy to Mastra Cloud
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check for lint errors
+        run: pnpm lint
+
+      - name: Build
+        run: pnpm build
+
+      - name: Notify Mastra Cloud
+        run: |
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.MASTRA_DEPLOY_TOKEN }}" \
+            -d '{"repository":"${{ github.repository }}","sha":"${{ github.sha }}","branch":"${{ github.ref_name }}"}' \
+            https://api.mastra.cloud/webhooks/github
+        if: ${{ success() }}
+
+      - name: Deployment Status
+        run: echo "Deployment triggered in Mastra Cloud. Check status at https://cloud.mastra.ai" 
