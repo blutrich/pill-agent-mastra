@@ -9,6 +9,7 @@
     "start": "mastra start",
     "deploy": "tsx scripts/deploy.ts",
     "deploy:prod": "NODE_ENV=production pnpm deploy",
+    "deploy:cloud": "mastra deploy",
     "lint": "tsc --noEmit"
   },
   "keywords": [],
@@ -19,6 +20,8 @@
   "dependencies": {
     "@ai-sdk/openai": "^1.3.20",
     "@mastra/core": "^0.9.0",
+    "@mastra/deployer": "^0.3.0",
+    "@mastra/deployer-cloudflare": "^0.1.19",
     "@mastra/mcp": "^0.4.0",
     "@mastra/memory": "^0.3.0",
     "@mastra/voice-openai": "^0.1.15",

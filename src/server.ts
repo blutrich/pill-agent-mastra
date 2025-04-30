@@ -61,4 +61,4 @@ registerApiRoute('/api/health', {
       await next();
     }
   ]
-}); 
+});

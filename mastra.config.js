@@ -1,6 +1,4 @@
-import { defineConfig } from '@mastra/core';
-
-export default defineConfig({
+module.exports = {
   // Server configuration
   server: {
     port: process.env.PORT ? parseInt(process.env.PORT) : 4114,
@@ -41,4 +39,4 @@ export default defineConfig({
     provider: 'cloudflare',
     region: 'us-east-1'
   }
-}); 
+}; 
