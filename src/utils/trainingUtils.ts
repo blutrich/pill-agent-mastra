@@ -229,6 +229,10 @@ export class ClimbingProgressionCalculator implements ProgressionCalculator {
   }
 
   calculateProgressiveOverload(weekNumber: number) {
+    if (!Number.isInteger(weekNumber) || weekNumber < 1 || weekNumber > 6) {
+      throw new Error("Invalid weekNumber: must be an integer between 1 and 6.");
+    }
+
     const progressions = {
       fingerboard: {
         sets: [3, 3, 4, 5],
@@ -300,14 +304,30 @@ export class ClimbingProgressionCalculator implements ProgressionCalculator {
       projects: { moveCount: 6, intensity: 80 },
       volume: { multiplier: 1.0 }
     };
+    // The existing logic for weeks 1-6 remains unchanged.
+    // The default return at the end of the function will now only be reached if weekNumber is valid but not 1-6,
+    // however, the new validation ensures this path is never taken.
+    // For clarity, we could remove the final default return, but it's harmless.
   }
 }
 
+/**
+ * Generates a structured, template 6-week climbing training cycle.
+ * This class provides a predefined progression suitable for general improvement.
+ * For highly specific needs or advanced periodization, further customization
+ * or a different generation approach might be necessary.
+ */
 export class OptimizedSixWeekCycle {
   private weeks: TrainingWeek[] = [];
 
   constructor(private profile: ClimberProfile) {}
 
+  /**
+   * Generates the complete 6-week training cycle.
+   * It iterates through each week, determines focus, volume, and intensity,
+   * and populates training days with predefined sessions.
+   * @returns An object containing the array of TrainingWeek.
+   */
   generateFullCycle(): { weeks: TrainingWeek[] } {
     const exerciseFactory = new ClimbingExerciseFactory(this.profile);
     const progression = new ClimbingProgressionCalculator(this.profile);
@@ -346,6 +366,33 @@ export class OptimizedSixWeekCycle {
     return focuses[week - 1];
   }
 
+  /**
+   * Generates training sessions for a specific day within a week.
+   * 
+   * NOTE: The exercises and session structure defined in this method are currently
+   * predefined to create a typical 6-week climbing training cycle. This serves as a
+   * general template.
+   * 
+   * Rationale:
+   * - Morning sessions (weeks 1-4): Typically focus on strength components like
+   *   fingerboarding and pull-ups, which are foundational for climbing performance.
+   *   These are often best done when fresh.
+   * - Afternoon sessions: Focus on actual climbing, incorporating bouldering for
+   *   power and intensity, and technique drills for skill refinement.
+   * 
+   * This structure is a template and might need adjustment for individual needs,
+   * specific goals not fully captured by the ClimberProfile (e.g., very specific
+   * project requirements), or if different training philosophies are preferred.
+   * The intensity and volume are scaled by the `progression` calculator, but the
+   * choice of exercises themselves is fixed here.
+   * 
+   * @param week The current week number (1-6).
+   * @param day The current day number within the week.
+   * @param volume The calculated training volume for the session.
+   * @param intensity The calculated training intensity for the session.
+   * @param factory The exercise factory to create session components.
+   * @returns An array of TrainingSession objects for the given day.
+   */
   private generateSessionsForDay(
     week: number,
     day: number,
@@ -391,12 +438,15 @@ export class OptimizedSixWeekCycle {
   getInjuryModifications(): string[] {
     if (this.profile.injuries === 'None') return [];
 
+    // These are general guidelines for modifying training with injuries.
+    // For specific injuries or persistent pain, it is highly recommended
+    // to consult a physical therapist or medical professional for tailored advice.
     return [
       'Reduce intensity by 20%',
       'Increase rest periods between exercises',
       'Focus on proper form and technique',
       'Avoid exercises that aggravate injuries',
-      'Include specific rehabilitation exercises',
+      'Include specific rehabilitation exercises (if known and appropriate)',
     ];
   }
 } 
